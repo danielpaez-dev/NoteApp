@@ -13,7 +13,7 @@ class Note(models.Model):
 
     title = models.CharField(max_length=200)
     content = models.TextField()
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     category = models.CharField(max_length=15, choices=CATEGORY, default="PERSONAL")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
