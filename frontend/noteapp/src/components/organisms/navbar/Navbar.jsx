@@ -4,6 +4,7 @@ import Title from "../../atom/Title/Title.jsx";
 import Searcher from "../../molecules/Searcher/Searcher.jsx";
 import Option from "../../molecules/Option/Option.jsx";
 import Avatar from "../../molecules/Avatar/Avatar.jsx";
+import Filter from "../../molecules/Filter/Filter.jsx";
 
 function Navbar() {
   const [avatarSrc, setAvatarSrc] = useState("");
@@ -36,6 +37,7 @@ function Navbar() {
           <Avatar src={avatarSrc} alt="Random User Avatar" />
         </div>
       </nav>
+      <Filter />
     </header>
   );
 }

@@ -1,0 +1,8 @@
+.container-select {
+  margin-top: 1rem;
+}
+
+select {
+  max-width: 10% !important;
+  min-width: fit-content;
+}
