@@ -1,0 +1,15 @@
+@import "../../../../../styles/scss/variables.scss";
+
+nav {
+  display: flex;
+  padding: $tam-base;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid $light-gray;
+}
+
+#profile-options {
+  display: flex;
+  align-items: center;
+  gap: $tam-base;
+}

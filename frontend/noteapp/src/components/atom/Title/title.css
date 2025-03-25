@@ -1,0 +1,11 @@
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  color: #000;
+  text-align: center;
+  text-transform: capitalize;
+  letter-spacing: 0.1rem;
+  font-family: "Roboto", sans-serif;
+}
