@@ -12,3 +12,11 @@
   font-size: 1.25rem;
   font-weight: bold;
 }
+
+.filter-label,
+.container-select {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  margin: 0 !important;
+}
