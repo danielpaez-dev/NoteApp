@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Filter from "../../molecules/Filter/Filter.jsx";
 import "./NotesModal.css";
+import actualDate from "../../../utils/GetDate.js";
 
 function NotesModal({
   show,
@@ -11,7 +12,6 @@ function NotesModal({
   updated = "",
   content = "",
   category = "",
-  type = "",
   onSubmit,
 }) {
   const [noteTitle, setNoteTitle] = useState("");
@@ -40,8 +40,35 @@ function NotesModal({
   }, [category]);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    onHide(); // Close the modal after submission
+    if (e) e.preventDefault();
+
+    const updatedFields = {};
+
+    // Compara los valores actuales con los iniciales y agrega solo los campos modificados
+    if (noteTitle !== title) {
+      updatedFields.title = noteTitle;
+    }
+    if (body !== content) {
+      updatedFields.content = body;
+    }
+    if (selectedOption !== category) {
+      updatedFields.category = selectedOption;
+    }
+
+    // Si hay cambios, envía los datos modificados
+    if (Object.keys(updatedFields).length > 0) {
+      updatedFields.updated = actualDate(); // Agrega la fecha de actualización
+
+      console.log("Submitting updated fields:", updatedFields);
+
+      if (onSubmit) {
+        onSubmit(updatedFields); // Envía solo los campos modificados
+      }
+    } else {
+      console.log("No changes detected, skipping submit.");
+    }
+
+    onHide(); // Cierra el modal después de verificar
   };
 
   const handleOptionChange = (option) => {
@@ -51,7 +78,7 @@ function NotesModal({
   return (
     <Modal
       show={show}
-      onHide={onHide}
+      onHide={handleSubmit}
       size="lg"
       aria-labelledby="create-note-model"
       centered
