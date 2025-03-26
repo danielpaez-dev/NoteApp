@@ -3,7 +3,7 @@ import CardContainer from "../components/organisms/CardContainer/CardContainer";
 
 function Notes() {
   return (
-    <main>
+    <main className="container">
       <CardContainer />
     </main>
   );

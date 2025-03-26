@@ -21,13 +21,13 @@
   height: 20px;
   border: none;
   -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   outline: none;
 }
 .search-input::-webkit-search-cancel-button {
   -webkit-appearance: none;
-  appearance: none;
+          appearance: none;
 }
 
 .search-button {
