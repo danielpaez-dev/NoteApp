@@ -1,25 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./CardContainer.css";
 import Note from "../../molecules/Note/Note"; // Cambiado de Card a Note
+import getDate from "../../../utils/GetDate";
+
+// Función para capitalizar la categoría
+const capitalizeCategory = (category) => {
+  if (!category) return ""; // Maneja valores nulos o indefinidos
+  return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+};
 
 function CardContainer() {
-  const data = [
-    {
-      title: "Planificación semanal",
-      updated: "2025-03-26",
-      content:
-        "Organizar las tareas de la semana, incluyendo reuniones y entregas importantes.",
-      category: "Business",
-    },
-    {
-      title: "Lista de compras",
-      updated: "2025-03-25",
-      content: "Comprar frutas, verduras, leche y pan para la semana.",
-      category: "Personal",
-    },
-  ];
+  const [data, setData] = useState([]);
 
-  // Mandar color creo que también
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/notes/")
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, []);
 
   return (
     <div id="note-has-grid" className="row gap-3">
@@ -27,9 +30,9 @@ function CardContainer() {
         <Note
           key={index}
           title={note.title}
-          updated={note.updated}
+          updated={getDate(note.updated)}
           content={note.content}
-          category={note.category}
+          category={capitalizeCategory(note.category)} // Capitaliza la categoría
         />
       ))}
     </div>

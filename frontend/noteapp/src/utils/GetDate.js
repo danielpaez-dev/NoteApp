@@ -1,13 +1,13 @@
-export default function getDate() {
-    const today = new Date();
+export default function getDate(dateString = null) {
+    const date = dateString ? new Date(dateString) : new Date();
 
-    let day = today.getDate();
-    let month = today.getMonth() + 1;
-    let year = today.getFullYear();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
 
-    day = day < 10 ? '0' + day : day;
-    month = month < 10 ? '0' + month : month;
+    // Para que siempre tenga dos dígitos
+    day = day < 10 ? "0" + day : day;
+    month = month < 10 ? "0" + month : month;
 
-    const formattedDate = `${day}-${month}-${year}`;
-    return formattedDate;
+    return `${day}-${month}-${year}`;
 }
