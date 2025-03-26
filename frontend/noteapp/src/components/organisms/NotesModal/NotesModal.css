@@ -1,0 +1,14 @@
+.note-input {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.note-input:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#note-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
