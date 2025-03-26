@@ -19,9 +19,9 @@ const Filter = ({ selectedOption, onChange }) => {
         <option value="" disabled>
           All Notes
         </option>
-        <option value="1">Business</option>
-        <option value="2">Important</option>
-        <option value="3">Personal</option>
+        <option value="Business">Business</option>
+        <option value="Important">Important</option>
+        <option value="Personal">Personal</option>
       </Form.Select>
     </div>
   );

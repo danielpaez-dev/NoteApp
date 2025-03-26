@@ -1,20 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Filter from "../../molecules/Filter/Filter.jsx";
 import "./NotesModal.css";
 
-function NotesModal(props) {
-  const [title, setTitle] = useState("");
+function NotesModal({
+  show,
+  onHide,
+  title = "",
+  updated = "",
+  content = "",
+  category = "",
+  type = "",
+  onSubmit,
+}) {
+  const [noteTitle, setNoteTitle] = useState("");
   const [body, setBody] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
 
+  // Initialize noteTitle with title if it's not empty
+  useEffect(() => {
+    if (title) {
+      setNoteTitle(title);
+    }
+  }, [title]);
+
+  // Initialize body with content if it's not empty
+  useEffect(() => {
+    if (content) {
+      setBody(content);
+    }
+  }, [content]);
+
+  // Initialize selectedOption with category if it's not empty
+  useEffect(() => {
+    if (category) {
+      setSelectedOption(category);
+    }
+  }, [category]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Title:", title);
-    console.log("Body:", body);
-    console.log("Selected Option:", selectedOption);
-    props.onHide(); // Close the modal after submission
+    onHide(); // Close the modal after submission
   };
 
   const handleOptionChange = (option) => {
@@ -22,14 +49,20 @@ function NotesModal(props) {
   };
 
   return (
-    <Modal {...props} size="lg" aria-labelledby="create-note-model" centered>
+    <Modal
+      show={show}
+      onHide={onHide}
+      size="lg"
+      aria-labelledby="create-note-model"
+      centered
+    >
       <Form onSubmit={handleSubmit} id="note-modal">
         <Modal.Header closeButton>
           <Form.Control
             type="text"
             placeholder="Enter note title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={noteTitle}
+            onChange={(e) => setNoteTitle(e.target.value)}
             id="note-title"
             className="note-input"
           />
