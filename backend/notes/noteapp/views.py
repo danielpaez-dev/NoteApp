@@ -19,10 +19,11 @@ def notes(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(["GET", "PUT", "DELETE"])
-def note_detail(request, slug):
+def note_detail(request, pk):
     try:
-        note = Note.objects.get(slug=slug)
+        note = Note.objects.get(pk=pk)
     except Note.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -30,7 +31,7 @@ def note_detail(request, slug):
         serializer = NoteSerializer(note)
         return Response(serializer.data)
     elif request.method == "PUT":
-        serializer = NoteSerializer(note, data=request.data)
+        serializer = NoteSerializer(note, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

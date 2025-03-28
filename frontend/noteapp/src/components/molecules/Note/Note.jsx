@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import NotesModal from "../../organisms/NotesModal/NotesModal";
+import axios from "axios";
 
-function Note({ title, updated, content, category }) {
-  /*
-  * El objetivo es que cuando se escuche un cambio en la nota,
-  esta actualice la base de datos con los datos nuevos y al mismo tiempo,
-  actualice el frontend, así se minimiza las llamadas al back
-  */
+function Note({ title, id, updated, content, category }) {
   const [showModal, setShowModal] = useState(false);
 
   // Estado local para almacenar los datos de la nota
@@ -33,15 +29,37 @@ function Note({ title, updated, content, category }) {
     setShowModal(false);
   };
 
-  // Función para manejar los datos actualizados desde NotesModal
-  const handleUpdateNote = (updatedNote) => {
-    // Combina los datos existentes con los datos actualizados
-    setNoteData((prevData) => ({
-      ...prevData,
-      ...updatedNote, // Solo actualiza los campos que hayan cambiado
-    }));
+  const handleUpdateNote = async (updatedNote) => {
+    try {
+      setNoteData((prevData) => ({
+        ...prevData,
+        ...updatedNote,
+      }));
 
-    console.log("Datos actualizados:", { ...noteData, ...updatedNote });
+      const updatedData = await updateNoteBackend(updatedNote);
+      console.log("Note updated successfully:", updatedData);
+    } catch (error) {
+      console.error("Error updating the note:", error);
+      alert("Failed to update the note. Please try again.");
+    }
+  };
+
+  const updateNoteBackend = async (updatedFields) => {
+    try {
+      const response = await axios.put(
+        `http://127.0.0.1:8000/notes/${id}`,
+        updatedFields,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error al actualizar la nota:", error);
+      throw error;
+    }
   };
 
   return (

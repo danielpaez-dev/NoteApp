@@ -9,7 +9,6 @@ function NotesModal({
   show,
   onHide,
   title = "",
-  updated = "",
   content = "",
   category = "",
   onSubmit,
@@ -18,33 +17,17 @@ function NotesModal({
   const [body, setBody] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
 
-  // Initialize noteTitle with title if it's not empty
   useEffect(() => {
-    if (title) {
-      setNoteTitle(title);
-    }
-  }, [title]);
-
-  // Initialize body with content if it's not empty
-  useEffect(() => {
-    if (content) {
-      setBody(content);
-    }
-  }, [content]);
-
-  // Initialize selectedOption with category if it's not empty
-  useEffect(() => {
-    if (category) {
-      setSelectedOption(category);
-    }
-  }, [category]);
+    setNoteTitle(title || "");
+    setBody(content || "");
+    setSelectedOption(category || "Personal");
+  }, [title, content, category]);
 
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
 
     const updatedFields = {};
 
-    // Compara los valores actuales con los iniciales y agrega solo los campos modificados
     if (noteTitle !== title) {
       updatedFields.title = noteTitle;
     }
@@ -55,24 +38,25 @@ function NotesModal({
       updatedFields.category = selectedOption;
     }
 
-    // Si hay cambios, envía los datos modificados
+    // If changes exist, send modified data
     if (Object.keys(updatedFields).length > 0) {
-      updatedFields.updated = actualDate(); // Agrega la fecha de actualización
+      updatedFields.updated = actualDate(); // Add update date
 
       console.log("Submitting updated fields:", updatedFields);
 
       if (onSubmit) {
-        onSubmit(updatedFields); // Envía solo los campos modificados
+        onSubmit(updatedFields); // Send only modified fields
       }
     } else {
       console.log("No changes detected, skipping submit.");
     }
 
-    onHide(); // Cierra el modal después de verificar
+    onHide(); // Close modal after verification
   };
 
   const handleOptionChange = (option) => {
-    setSelectedOption(option); // Update the selected option
+    // Ensure the selected option is updated
+    setSelectedOption(option);
   };
 
   return (

@@ -12,7 +12,6 @@ const Filter = ({ selectedOption, onChange }) => {
       <Form.Select
         name="form-select"
         aria-label="Select a filter"
-        defaultValue=""
         onChange={handleSelect}
         value={selectedOption}
       >

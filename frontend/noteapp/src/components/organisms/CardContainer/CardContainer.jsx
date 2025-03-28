@@ -29,10 +29,11 @@ function CardContainer() {
       {data.map((note, index) => (
         <Note
           key={index}
+          id={note.id}
           title={note.title}
           updated={getDate(note.updated)}
           content={note.content}
-          category={capitalizeCategory(note.category)} // Capitaliza la categoría
+          category={capitalizeCategory(note.category)}
         />
       ))}
     </div>
