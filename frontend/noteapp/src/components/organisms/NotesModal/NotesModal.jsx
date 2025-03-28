@@ -47,6 +47,12 @@ function NotesModal({
       if (onSubmit) {
         onSubmit(updatedFields); // Send only modified fields
       }
+    } else if (Object.keys(updatedFields).length == 4) {
+      console.log("Creating new note:", updatedFields);
+
+      if (onSubmit) {
+        onSubmit(updatedFields); // Sending new notes
+      }
     } else {
       console.log("No changes detected, skipping submit.");
     }
