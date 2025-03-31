@@ -11,7 +11,7 @@ const capitalizeCategory = (category) => {
   return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
 };
 
-function CardContainer() {
+function CardContainer({ refresh }) {
   const [data, setData] = useState([]);
 
   const fetchNotes = () => {
@@ -27,7 +27,7 @@ function CardContainer() {
 
   useEffect(() => {
     fetchNotes();
-  }, []);
+  }, [refresh]);
 
   return (
     <div id="note-has-grid" className="row gap-3">
@@ -39,6 +39,7 @@ function CardContainer() {
           updated={getDate(note.updated)}
           content={note.content}
           category={capitalizeCategory(note.category)}
+          onNoteUpdated={fetchNotes}
         />
       ))}
     </div>

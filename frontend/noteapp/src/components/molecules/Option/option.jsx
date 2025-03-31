@@ -5,7 +5,7 @@ import NotesModal from "../../organisms/NotesModal/NotesModal";
 import axios from "axios"; // Añade esta importación
 import actualDate from "../../../utils/GetDate";
 
-function Option({ type }) {
+function Option({ onNoteCreated }) {
   const [showModal, setShowModal] = useState(false);
 
   const handleOpenModal = () => setShowModal(true);
@@ -31,6 +31,10 @@ function Option({ type }) {
       );
 
       console.log("Note created successfully:", response.data);
+
+      if (onNoteCreated) {
+        onNoteCreated();
+      }
     } catch (error) {
       console.error("Error creating the note:", error);
       alert("Error when creating the note");
@@ -40,7 +44,7 @@ function Option({ type }) {
   return (
     <div className="option">
       <Button variant="outline-warning" onClick={handleOpenModal}>
-        {type}
+        Add Note
       </Button>
 
       {/* Modal */}

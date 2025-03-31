@@ -1,11 +1,13 @@
 import React from "react";
 import CardContainer from "../components/organisms/CardContainer/CardContainer";
 
-function Notes() {
+function Notes({ refreshNotes }) {
   return (
-    <main className="container">
-      <CardContainer />
-    </main>
+    <>
+      <main className="container p-3">
+        <CardContainer refresh={refreshNotes} />
+      </main>
+    </>
   );
 }
 

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./styles/css/navbar.css";
 import Title from "../../atom/Title/Title.jsx";
 import Searcher from "../../molecules/Searcher/Searcher.jsx";
-import Option from "../../molecules/Option/Option.jsx";
 import Avatar from "../../molecules/Avatar/Avatar.jsx";
 import Filter from "../../molecules/Filter/Filter.jsx";
+import Option from "../../molecules/Option/option.jsx";
 
-function Navbar() {
+function Navbar({ onNoteCreated }) {
   const [avatarSrc, setAvatarSrc] = useState("");
 
   useEffect(() => {
@@ -33,11 +33,13 @@ function Navbar() {
         <Title />
         <Searcher />
         <div id="profile-options">
-          <Option type="Add Notes" />
+          <Option onNoteCreated={onNoteCreated} />
           <Avatar src={avatarSrc} alt="Random User Avatar" />
         </div>
       </nav>
-      <Filter />
+      <div className="container p-3">
+        <Filter />
+      </div>
     </header>
   );
 }
