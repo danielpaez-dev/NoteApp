@@ -6,7 +6,7 @@ import Avatar from "../../molecules/Avatar/Avatar.jsx";
 import Filter from "../../molecules/Filter/Filter.jsx";
 import Option from "../../molecules/Option/option.jsx";
 
-function Navbar({ onNoteCreated }) {
+function Navbar({ onNoteCreated, onFilterChange }) {
   const [avatarSrc, setAvatarSrc] = useState("");
 
   useEffect(() => {
@@ -16,8 +16,7 @@ function Navbar({ onNoteCreated }) {
       .then((response) => response.json())
       .then((data) => {
         if (isMounted) {
-          const imageUrl = data.results[0].picture.medium;
-          setAvatarSrc(imageUrl);
+          setAvatarSrc(data.results[0].picture.medium);
         }
       })
       .catch((error) => console.error("Error fetching random user:", error));
@@ -38,7 +37,7 @@ function Navbar({ onNoteCreated }) {
         </div>
       </nav>
       <div className="container p-3">
-        <Filter />
+        <Filter source="navbar" onChange={onFilterChange} />
       </div>
     </header>
   );

@@ -2,9 +2,9 @@ import React from "react";
 import "./filter.css";
 import Form from "react-bootstrap/Form";
 
-const Filter = ({ selectedOption, onChange }) => {
+const Filter = ({ onChange }) => {
   const handleSelect = (e) => {
-    onChange(e.target.value);
+    onChange(e.target.value); // Pasa la selección al estado global
   };
 
   return (
@@ -13,11 +13,8 @@ const Filter = ({ selectedOption, onChange }) => {
         name="form-select"
         aria-label="Select a filter"
         onChange={handleSelect}
-        value={selectedOption}
       >
-        <option value="" disabled>
-          All Notes
-        </option>
+        <option value="">All Notes</option>
         <option value="Business">Business</option>
         <option value="Important">Important</option>
         <option value="Personal">Personal</option>

@@ -6,6 +6,7 @@ import Option from "../components/molecules/Option/option.jsx";
 
 function App() {
   const [refreshNotes, setRefreshNotes] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState(""); // Estado para el filtro
 
   const handleNotesUpdate = () => {
     setRefreshNotes((prev) => !prev);
@@ -13,9 +14,17 @@ function App() {
 
   return (
     <>
-      <Navbar onNoteCreated={handleNotesUpdate} />
+      <Navbar
+        onNoteCreated={handleNotesUpdate}
+        onFilterChange={setSelectedFilter}
+      />
       <Routes>
-        <Route path="/" element={<Notes refreshNotes={refreshNotes} />} />
+        <Route
+          path="/"
+          element={
+            <Notes refreshNotes={refreshNotes} filter={selectedFilter} />
+          }
+        />
       </Routes>
     </>
   );

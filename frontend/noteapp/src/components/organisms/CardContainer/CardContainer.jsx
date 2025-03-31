@@ -1,39 +1,46 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./CardContainer.css";
-import Note from "../../molecules/Note/Note"; // Cambiado de Card a Note
-import NotesModal from "../NotesModal/NotesModal";
+import Note from "../../molecules/Note/Note";
 import getDate from "../../../utils/GetDate";
 
-// Función para capitalizar la categoría
 const capitalizeCategory = (category) => {
-  if (!category) return ""; // Maneja valores nulos o indefinidos
+  if (!category) return "";
   return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
 };
 
-function CardContainer({ refresh }) {
+function CardContainer({ refresh, filter }) {
   const [data, setData] = useState([]);
 
   const fetchNotes = () => {
     axios
       .get("http://127.0.0.1:8000/notes/")
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
+      .then((res) => setData(res.data))
+      .catch((err) => console.error(err.message));
   };
 
   useEffect(() => {
     fetchNotes();
   }, [refresh]);
 
+  const [filteredData, setFilteredData] = useState([]);
+
+  useEffect(() => {
+    const applyFilter = () => {
+      const filtered = filter
+        ? data.filter((note) => capitalizeCategory(note.category) === filter)
+        : data;
+      setFilteredData(filtered);
+    };
+
+    applyFilter();
+  }, [filter, data]);
+
   return (
     <div id="note-has-grid" className="row gap-3">
-      {data.map((note, index) => (
+      {filteredData.map((note) => (
         <Note
-          key={index}
+          key={note.id}
           id={note.id}
           title={note.title}
           updated={getDate(note.updated)}

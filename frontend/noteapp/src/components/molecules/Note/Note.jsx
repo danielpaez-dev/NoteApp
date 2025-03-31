@@ -71,7 +71,9 @@ function Note({ title, id, updated, content, category, onNoteUpdated }) {
   return (
     <>
       <Card
-        className="mb-3"
+        className={`mb-3 note`}
+        id={id}
+        data-category={noteData.category}
         style={{ width: "18rem" }}
         onClick={handleCardClick}
       >
