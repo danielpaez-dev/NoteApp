@@ -31,7 +31,6 @@ function Option({ type }) {
       );
 
       console.log("Note created successfully:", response.data);
-
     } catch (error) {
       console.error("Error creating the note:", error);
       alert("Error when creating the note");

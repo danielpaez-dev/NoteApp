@@ -4,10 +4,11 @@ import Badge from "react-bootstrap/Badge";
 import NotesModal from "../../organisms/NotesModal/NotesModal";
 import axios from "axios";
 
-function Note({ title, id, updated, content, category }) {
+function Note({ title, id, updated, content, category, onNoteUpdated }) {
+  // Add onNoteUpdated prop
   const [showModal, setShowModal] = useState(false);
 
-  // Estado local para almacenar los datos de la nota
+  // Local state to store note data
   const [noteData, setNoteData] = useState({
     title,
     updated,
@@ -38,6 +39,11 @@ function Note({ title, id, updated, content, category }) {
 
       const updatedData = await updateNoteBackend(updatedNote);
       console.log("Note updated successfully:", updatedData);
+
+      // Call the callback to refresh the notes list
+      if (onNoteUpdated) {
+        onNoteUpdated();
+      }
     } catch (error) {
       console.error("Error updating the note:", error);
       alert("Failed to update the note. Please try again.");
@@ -57,7 +63,7 @@ function Note({ title, id, updated, content, category }) {
       );
       return response.data;
     } catch (error) {
-      console.error("Error al actualizar la nota:", error);
+      console.error("Error updating note:", error);
       throw error;
     }
   };

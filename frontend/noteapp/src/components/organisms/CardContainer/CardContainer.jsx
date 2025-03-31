@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./CardContainer.css";
 import Note from "../../molecules/Note/Note"; // Cambiado de Card a Note
+import NotesModal from "../NotesModal/NotesModal";
 import getDate from "../../../utils/GetDate";
 
 // Función para capitalizar la categoría
@@ -13,7 +14,7 @@ const capitalizeCategory = (category) => {
 function CardContainer() {
   const [data, setData] = useState([]);
 
-  useEffect(() => {
+  const fetchNotes = () => {
     axios
       .get("http://127.0.0.1:8000/notes/")
       .then((res) => {
@@ -22,6 +23,10 @@ function CardContainer() {
       .catch((err) => {
         console.error(err.message);
       });
+  };
+
+  useEffect(() => {
+    fetchNotes();
   }, []);
 
   return (
