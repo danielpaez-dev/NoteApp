@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "./styles/css/searcher.css";
 
-function Searcher() {
+function Searcher({ onSearch }) {
   const [searchValue, setSearchValue] = useState("");
 
   const handleChange = (event) => {
-    setSearchValue(event.target.value);
+    const value = event.target.value;
+    setSearchValue(value);
+    onSearch(value);
   };
 
   return (

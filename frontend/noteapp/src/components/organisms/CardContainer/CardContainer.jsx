@@ -9,7 +9,7 @@ const capitalizeCategory = (category) => {
   return category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
 };
 
-function CardContainer({ refresh, filter }) {
+function CardContainer({ refresh, filter, searchTerm }) {
   const [data, setData] = useState([]);
 
   const fetchNotes = () => {
@@ -27,14 +27,36 @@ function CardContainer({ refresh, filter }) {
 
   useEffect(() => {
     const applyFilter = () => {
-      const filtered = filter
-        ? data.filter((note) => capitalizeCategory(note.category) === filter)
-        : data;
+      let filtered = data;
+
+      if (filter) {
+        filtered = filtered.filter(
+          (note) => capitalizeCategory(note.category) === filter
+        );
+      }
+
+      if (searchTerm) {
+        const lowerSearchTerm = searchTerm.toLowerCase();
+        filtered = filtered.filter((note) => {
+          const titleMatch = note.title.toLowerCase().includes(lowerSearchTerm);
+          const contentMatch = note.content
+            .toLowerCase()
+            .includes(lowerSearchTerm);
+          const dateMatch = getDate(note.updated)
+            .toLowerCase()
+            .includes(lowerSearchTerm);
+          const categoryMatch = capitalizeCategory(note.category)
+            .toLowerCase()
+            .includes(lowerSearchTerm);
+          return titleMatch || contentMatch || dateMatch || categoryMatch;
+        });
+      }
+
       setFilteredData(filtered);
     };
 
     applyFilter();
-  }, [filter, data]);
+  }, [filter, searchTerm, data]);
 
   return (
     <div id="note-has-grid" className="row gap-3">

@@ -6,7 +6,7 @@ import Avatar from "../../molecules/Avatar/Avatar.jsx";
 import Filter from "../../molecules/Filter/Filter.jsx";
 import Option from "../../molecules/Option/option.jsx";
 
-function Navbar({ onNoteCreated, onFilterChange }) {
+function Navbar({ onNoteCreated, onFilterChange, onSearch }) {
   const [avatarSrc, setAvatarSrc] = useState("");
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function Navbar({ onNoteCreated, onFilterChange }) {
     <header>
       <nav>
         <Title />
-        <Searcher />
+        <Searcher onSearch={onSearch} />
         <div id="profile-options">
           <Option onNoteCreated={onNoteCreated} />
           <Avatar src={avatarSrc} alt="Random User Avatar" />

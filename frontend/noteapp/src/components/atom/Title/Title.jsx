@@ -1,12 +1,11 @@
 import React from "react";
 import "./Title.css";
-import { Link } from "react-router-dom";
 
 const Title = () => {
   return (
-    <Link to="/">
+    <a href="/">
       <h1>NoteApp</h1>
-    </Link>
+    </a>
   );
 };
 

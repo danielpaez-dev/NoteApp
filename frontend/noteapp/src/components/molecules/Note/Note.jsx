@@ -5,10 +5,8 @@ import NotesModal from "../../organisms/NotesModal/NotesModal";
 import axios from "axios";
 
 function Note({ title, id, updated, content, category, onNoteUpdated }) {
-  // Add onNoteUpdated prop
   const [showModal, setShowModal] = useState(false);
 
-  // Local state to store note data
   const [noteData, setNoteData] = useState({
     title,
     updated,
