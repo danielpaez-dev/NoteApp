@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import Navbar from "../components/organisms/navbar/Navbar.jsx";
 import CardContainer from "../components/organisms/CardContainer/CardContainer";
 
-function Notes({ refreshNotes, filter, searchTerm }) {
+function Notes() {
+  const [refreshNotes, setRefreshNotes] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleNotesUpdate = () => {
+    setRefreshNotes((prev) => !prev);
+  };
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
   return (
-    <main className="container p-3">
-      <CardContainer
-        refresh={refreshNotes}
-        filter={filter}
-        searchTerm={searchTerm}
+    <>
+      <Navbar
+        onNoteCreated={handleNotesUpdate}
+        onFilterChange={setSelectedFilter}
+        onSearch={handleSearch}
       />
-    </main>
+      <main className="container p-3">
+        <CardContainer
+          refresh={refreshNotes}
+          filter={selectedFilter}
+          searchTerm={searchTerm}
+        />
+      </main>
+    </>
   );
 }
 
