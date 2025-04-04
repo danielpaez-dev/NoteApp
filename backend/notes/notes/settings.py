@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "noteapp",
+    "users",
     "rest_framework",
+    "rest_framework.authtoken",
     "corsheaders",
 ]
 
@@ -92,6 +94,9 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# User
+AUTH_USER_MODEL = "users.CustomUser"
 
 
 # Password validation

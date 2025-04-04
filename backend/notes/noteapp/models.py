@@ -1,6 +1,8 @@
 from django.db import models
+from django.conf import settings
 from django.utils.text import slugify
 from django.utils.crypto import get_random_string
+from users.models import CustomUser
 
 
 class Note(models.Model):
@@ -10,9 +12,18 @@ class Note(models.Model):
     category = models.CharField(max_length=15, default="Personal")
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="notes",
+        to_field="email",
+        default="default@example.com",
+        null=True,  # Temporary
+        blank=True,  # Temporary
+    )
 
     def __str__(self):
-        return self.title
+        return f"Title: {self.title}, Content: {self.content[:50]}..., Category: {self.category}, Created: {self.created}, Updated: {self.updated}, User: {self.user.email}"
 
     def save(self, *args, **kwargs):
         if not self.slug:
