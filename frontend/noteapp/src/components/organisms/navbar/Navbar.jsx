@@ -6,26 +6,7 @@ import Avatar from "../../molecules/Avatar/Avatar.jsx";
 import Filter from "../../molecules/Filter/Filter.jsx";
 import Option from "../../molecules/Option/option.jsx";
 
-function Navbar({ onNoteCreated, onFilterChange, onSearch }) {
-  const [avatarSrc, setAvatarSrc] = useState("");
-
-  useEffect(() => {
-    let isMounted = true;
-
-    fetch("https://randomuser.me/api/")
-      .then((response) => response.json())
-      .then((data) => {
-        if (isMounted) {
-          setAvatarSrc(data.results[0].picture.medium);
-        }
-      })
-      .catch((error) => console.error("Error fetching random user:", error));
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
+function Navbar({ avatarSrc, onNoteCreated, onFilterChange, onSearch }) {
   return (
     <header>
       <nav>

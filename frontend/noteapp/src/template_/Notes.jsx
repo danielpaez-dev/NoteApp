@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import Navbar from "../components/organisms/navbar/Navbar.jsx";
 import CardContainer from "../components/organisms/CardContainer/CardContainer";
 
 function Notes() {
+  const { user, isAuthenticated } = useAuth0();
   const [refreshNotes, setRefreshNotes] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,6 +20,7 @@ function Notes() {
   return (
     <>
       <Navbar
+        avatarSrc={user?.picture}
         onNoteCreated={handleNotesUpdate}
         onFilterChange={setSelectedFilter}
         onSearch={handleSearch}

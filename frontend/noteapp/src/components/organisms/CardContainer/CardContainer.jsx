@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react"; // Importamos el hook de Auth0
 import "./CardContainer.css";
 import Note from "../../molecules/Note/Note";
 import getDate from "../../../utils/GetDate";
@@ -10,13 +11,22 @@ const capitalizeCategory = (category) => {
 };
 
 function CardContainer({ refresh, filter, searchTerm }) {
+  const { getAccessTokenSilently } = useAuth0(); // Accedemos a la función para obtener el token
   const [data, setData] = useState([]);
 
-  const fetchNotes = () => {
-    axios
-      .get("http://127.0.0.1:8000/notes/")
-      .then((res) => setData(res.data))
-      .catch((err) => console.error(err.message));
+  // Función para hacer la solicitud a Django y obtener las notas del usuario autenticado
+  const fetchNotes = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await axios.get("http://127.0.0.1:8000/notes/", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Enviamos el token en el encabezado Authorization
+        },
+      });
+      setData(response.data);
+    } catch (err) {
+      console.error("Error fetching notes:", err.message);
+    }
   };
 
   useEffect(() => {
