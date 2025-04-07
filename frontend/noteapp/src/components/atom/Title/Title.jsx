@@ -3,7 +3,7 @@ import "./Title.css";
 
 const Title = () => {
   return (
-    <a href="/">
+    <a href="/notes">
       <h1>NoteApp</h1>
     </a>
   );
