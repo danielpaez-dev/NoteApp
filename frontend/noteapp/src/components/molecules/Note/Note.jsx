@@ -2,17 +2,18 @@ import React, { useState } from "react";
 import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import NotesModal from "../../organisms/NotesModal/NotesModal";
+import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 
 function Note({ title, id, updated, content, category, onNoteUpdated }) {
   const [showModal, setShowModal] = useState(false);
-
   const [noteData, setNoteData] = useState({
     title,
     updated,
     content,
     category,
   });
+  const { getAccessTokenSilently } = useAuth0();
 
   const colourCategorie = {
     Business: "primary",
@@ -50,11 +51,13 @@ function Note({ title, id, updated, content, category, onNoteUpdated }) {
 
   const updateNoteBackend = async (updatedFields) => {
     try {
+      const token = await getAccessTokenSilently();
       const response = await axios.put(
         `http://127.0.0.1:8000/notes/${id}`,
         updatedFields,
         {
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }

@@ -6,8 +6,8 @@ from users.models import CustomUser
 
 
 class Note(models.Model):
-    title = models.CharField(max_length=200)
-    content = models.TextField()
+    title = models.CharField(max_length=200, blank=True, null=True)
+    content = models.TextField(blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
     category = models.CharField(max_length=15, default="Personal")
     created = models.DateTimeField(auto_now_add=True)
@@ -16,10 +16,7 @@ class Note(models.Model):
         CustomUser,
         on_delete=models.CASCADE,
         related_name="notes",
-        to_field="email",
-        default="default@example.com",
-        null=True,  # Temporary
-        blank=True,  # Temporary
+        to_field="auth0_id",
     )
 
     def __str__(self):
@@ -27,9 +24,13 @@ class Note(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            slug_base = slugify(self.title)
+            slug_base = slugify(self.title) if self.title else "note"
             slug = slug_base
             if Note.objects.filter(slug=slug).exists():
                 slug = f"{slug_base}-{get_random_string(5)}"
             self.slug = slug
-        super(Note, self).save(*args, **kwargs)
+        try:
+            super(Note, self).save(*args, **kwargs)
+        except Exception as e:
+            print(f"Error guardando nota: {str(e)}")  # Debug clave
+            raise

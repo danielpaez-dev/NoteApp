@@ -12,14 +12,24 @@ from rest_framework import status
 def notes(request):
     if request.method == "GET":
         notes = Note.objects.filter(user=request.user).order_by("updated")
+        print("Notas filtradas:", notes)
         serializer = NoteSerializer(notes, many=True)
         return Response(serializer.data)
     elif request.method == "POST":
-        serializer = NoteSerializer(user=request.data)
+        print(f"Usuario autenticado (auth0_id): {request.user.auth0_id}")  # Debug
+        print(f"Datos recibidos: {request.data}")  # Debug
+        data = request.data.copy()
+        serializer = NoteSerializer(
+            data=request.data,
+            context={"request": request},
+        )
         if serializer.is_valid():
-            serializer.save(user=request.data)
+            serializer.save()
+            print("Nota creada exitosamente")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            print("Errores de validación:", serializer.errors)  # Debug
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET", "PUT", "DELETE"])

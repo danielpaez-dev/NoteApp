@@ -18,12 +18,14 @@ function CardContainer({ refresh, filter, searchTerm }) {
   const fetchNotes = async () => {
     try {
       const token = await getAccessTokenSilently();
+      console.log("Token:", token); // Verificamos el token en la consola
       const response = await axios.get("http://127.0.0.1:8000/notes/", {
         headers: {
           Authorization: `Bearer ${token}`, // Enviamos el token en el encabezado Authorization
         },
       });
       setData(response.data);
+      console.log(response.data);
     } catch (err) {
       console.error("Error fetching notes:", err.message);
     }

@@ -7,8 +7,7 @@ import Notes from "../template_/Notes.jsx";
 import PrivateRoute from "../components/atom/PrivateRoute.jsx";
 
 function App() {
-  const { isAuthenticated, isLoading, loginWithRedirect, appState, error } =
-    useAuth0();
+  const { isAuthenticated, appState, logout } = useAuth0();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,12 +17,6 @@ function App() {
     }
   }, [isAuthenticated, appState, navigate]);
 
-  // Si aún está cargando, podemos mostrar un mensaje o un spinner
-  if (isLoading) return <p>Cargando...</p>;
-
-  // Manejo de errores
-  if (error) return <p>Error: {error.message}</p>;
-
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -31,7 +24,7 @@ function App() {
         path="/notes"
         element={
           <PrivateRoute>
-            <Notes />
+            <Notes onLogout={logout} />
           </PrivateRoute>
         }
       />

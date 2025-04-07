@@ -13,3 +13,11 @@ nav {
   align-items: center;
   gap: $tam-base;
 }
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+[aria-labelledby="avatar-dropdown"] {
+  padding: 0px !important;
+}

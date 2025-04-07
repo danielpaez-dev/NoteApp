@@ -15,7 +15,7 @@ createRoot(document.getElementById("root")).render(
         clientId="ZnvXK4fAqSONuhij1yT0dNbdeLu9qyTa"
         authorizationParams={{
           redirect_uri: window.location.origin,
-          audience: "https://dev-ytqv2ajif8x1tuyi.us.auth0.com/api/v2/",
+          audience: "https://danielpaez-dev-noteapp-api.com",
           scope: "openid profile email",
         }}
       >
