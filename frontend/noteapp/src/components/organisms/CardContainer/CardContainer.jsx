@@ -17,15 +17,22 @@ function CardContainer({ refresh, filter, searchTerm }) {
   // Función para hacer la solicitud a Django y obtener las notas del usuario autenticado
   const fetchNotes = async () => {
     try {
-      const token = await getAccessTokenSilently();
-      console.log("Token:", token); // Verificamos el token en la consola
-      const response = await axios.get("http://127.0.0.1:8000/notes/", {
-        headers: {
-          Authorization: `Bearer ${token}`, // Enviamos el token en el encabezado Authorization
-        },
-      });
+      const isDemoUser = localStorage.getItem("isDemoUser") === "true";
+
+      let response;
+
+      if (isDemoUser) {
+        response = await axios.get("http://127.0.0.1:8000/notes/", {
+          withCredentials: true,
+        });
+      } else {
+        const token = await getAccessTokenSilently();
+        response = await axios.get("http://127.0.0.1:8000/notes/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      }
+
       setData(response.data);
-      console.log(response.data);
     } catch (err) {
       console.error("Error fetching notes:", err.message);
     }
