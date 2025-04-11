@@ -6,7 +6,7 @@ from .models import DefaultUser
 class DefaultUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = DefaultUser
-        fields = ["email", "first_name", "last_name", "profile_image"]
+        fields = ["email", "first_name", "last_name", "is_staff"]
 
 
 class DefaultUserRegisterSerializer(serializers.ModelSerializer):

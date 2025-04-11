@@ -26,40 +26,20 @@ function NotesModal({
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
 
-    const updatedFields = {};
+    const noteData = {
+      title: noteTitle,
+      content: body,
+      category: selectedOption,
+    };
 
-    if (noteTitle !== title) {
-      updatedFields.title = noteTitle;
-    }
-    if (body !== content) {
-      updatedFields.content = body;
-    }
-    if (selectedOption !== category) {
-      updatedFields.category = selectedOption;
-    }
+    console.log("Submitting note data:", noteData);
 
-    // If changes exist, send modified data
-    if (Object.keys(updatedFields).length > 0) {
-      updatedFields.updated = actualDate(); // Add update date
-
-      console.log("Submitting updated fields:", updatedFields);
-
-      if (onSubmit) {
-        onSubmit(updatedFields); // Send only modified fields
-      }
-    } else if (Object.keys(updatedFields).length == 4) {
-      console.log("Creating new note:", updatedFields);
-
-      if (onSubmit) {
-        onSubmit(updatedFields); // Sending new notes
-      }
-    } else {
-      console.log("No changes detected, skipping submit.");
+    if (onSubmit) {
+      onSubmit(noteData);
     }
 
-    onHide(); // Close modal after verification
+    onHide();
   };
-
   const handleOptionChange = (option) => {
     // Ensure the selected option is updated
     setSelectedOption(option);

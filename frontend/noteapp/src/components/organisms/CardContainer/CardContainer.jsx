@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react"; // Importamos el hook de Auth0
+import { useAuth0 } from "@auth0/auth0-react";
 import "./CardContainer.css";
 import Note from "../../molecules/Note/Note";
 import getDate from "../../../utils/GetDate";
@@ -11,30 +11,33 @@ const capitalizeCategory = (category) => {
 };
 
 function CardContainer({ refresh, filter, searchTerm }) {
-  const { getAccessTokenSilently } = useAuth0(); // Accedemos a la función para obtener el token
+  const { getAccessTokenSilently } = useAuth0();
   const [data, setData] = useState([]);
 
-  // Función para hacer la solicitud a Django y obtener las notas del usuario autenticado
   const fetchNotes = async () => {
     try {
       const isDemoUser = localStorage.getItem("isDemoUser") === "true";
+      const authToken = localStorage.getItem("authToken");
 
-      let response;
+      const headers = {
+        "Content-Type": "application/json",
+      };
 
       if (isDemoUser) {
-        response = await axios.get("http://127.0.0.1:8000/notes/", {
-          withCredentials: true,
-        });
+        headers["Authorization"] = `Token ${authToken}`;
       } else {
         const token = await getAccessTokenSilently();
-        response = await axios.get("http://127.0.0.1:8000/notes/", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        headers["Authorization"] = `Bearer ${token}`;
       }
+
+      const response = await axios.get("http://127.0.0.1:8000/api/notes/", {
+        headers: headers,
+        withCredentials: true,
+      });
 
       setData(response.data);
     } catch (err) {
-      console.error("Error fetching notes:", err.message);
+      console.error("Error fetching notes:", err.response?.data || err.message);
     }
   };
 

@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "note",
-    "default_user",
+    "default_users",
     "users",
     "rest_framework",
     "rest_framework.authtoken",
@@ -72,6 +72,12 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.JSONRenderer",
     ],
 }
+
+AUTHENTICATION_BACKENDS = [
+    "default_users.backends.DefaultUserBackend",
+    "django.contrib.auth.backends.ModelBackend",
+    "users.auth0backend.Auth0Backend",
+]
 
 ROOT_URLCONF = "noteapp.urls"
 
@@ -114,7 +120,8 @@ DATABASES = {
 }
 
 # User
-AUTH_USER_MODEL = "users.CustomUser"
+AUTH_USER_MODEL = "default_users.DefaultUser"
+AUTH0_USER_MODEL = "users.CustomUser"
 
 
 # Password validation

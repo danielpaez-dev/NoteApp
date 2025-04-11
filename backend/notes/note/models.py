@@ -13,10 +13,9 @@ class Note(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(
-        CustomUser,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="notes",
-        to_field="auth0_id",
     )
 
     def __str__(self):

@@ -4,6 +4,7 @@ import "./Option.css";
 import Button from "react-bootstrap/Button";
 import NotesModal from "../../organisms/NotesModal/NotesModal";
 import axios from "axios";
+import getCookie from "../../../utils/GetCookie";
 import actualDate from "../../../utils/GetDate";
 
 function Option({ onNoteCreated }) {
@@ -15,29 +16,40 @@ function Option({ onNoteCreated }) {
 
   const addNote = async (noteData) => {
     try {
-      const token = await getAccessTokenSilently(); // Obtén el token
-      const newNote = {
-        ...noteData,
-        created: actualDate(),
-        updated: actualDate(),
+      const isDemoUser = localStorage.getItem("isDemoUser") === "true";
+      const authToken = localStorage.getItem("authToken");
+
+      const headers = {
+        "Content-Type": "application/json",
       };
 
-      const response = await axios.post(
-        "http://127.0.0.1:8000/notes/",
-        newNote,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Añade el token aquí
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      // Configurar autenticación según el tipo de usuario
+      if (isDemoUser) {
+        headers["Authorization"] = `Token ${authToken}`;
+        headers["X-CSRFToken"] = getCookie("csrftoken"); // Necesario para Django
+      } else {
+        const token = await getAccessTokenSilently();
+        headers["Authorization"] = `Bearer ${token}`;
+      }
 
-      console.log("Note created successfully:", response.data);
+      // Eliminar campos automáticos del frontend
+      const { created, updated, ...cleanData } = noteData;
+
+      await axios.post("http://127.0.0.1:8000/api/notes/", cleanData, {
+        headers: headers,
+        withCredentials: true,
+      });
+
       if (onNoteCreated) onNoteCreated();
     } catch (error) {
-      console.error("Error creating the note:", error);
-      alert("Error when creating the note");
+      console.error(
+        "Error creating note:",
+        error.response?.data || error.message
+      );
+      alert(
+        "Error creating note: " +
+          (error.response?.data?.detail || error.message)
+      );
     }
   };
 

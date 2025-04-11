@@ -3,6 +3,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// Función auxiliar para obtener cookies
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+};
+
 function Home() {
   const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
   const [isDemoUser, setIsDemoUser] = useState(false);
@@ -11,17 +18,27 @@ function Home() {
   const loginAsDemoUser = async () => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/demo-login/",
+        "http://127.0.0.1:8000/api/demo/login/",
         {},
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie("csrftoken"),
+          },
+        }
       );
 
-      if (response.data.status === "success") {
+      if (response.data.token) {
+        localStorage.setItem("authToken", response.data.token);
         localStorage.setItem("isDemoUser", "true");
         navigate("/notes");
       }
     } catch (error) {
-      console.error("Error en acceso demo:", error);
+      console.error(
+        "Error en acceso demo:",
+        error.response?.data || error.message
+      );
       alert("Error al acceder como usuario demo");
     }
   };
@@ -36,13 +53,17 @@ function Home() {
     if (isDemoUser) {
       axios
         .post(
-          "http://127.0.0.1:8000/demo-logout/",
+          "http://127.0.0.1:8000/api/demo/logout/",
           {},
           {
             withCredentials: true,
+            headers: {
+              "X-CSRFToken": getCookie("csrftoken"),
+            },
           }
         )
         .finally(() => {
+          localStorage.removeItem("authToken");
           localStorage.removeItem("isDemoUser");
           navigate("/");
         });
@@ -68,7 +89,7 @@ function Home() {
           </button>
         </>
       ) : (
-        <button className="btn btn-danger" onClick={{ handleLogout }}>
+        <button className="btn btn-danger" onClick={handleLogout}>
           Cerrar sesión
         </button>
       )}

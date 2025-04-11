@@ -53,7 +53,7 @@ function Note({ title, id, updated, content, category, onNoteUpdated }) {
     try {
       const token = await getAccessTokenSilently();
       const response = await axios.put(
-        `http://127.0.0.1:8000/notes/${id}`,
+        `http://127.0.0.1:8000/api/notes/${id}`,
         updatedFields,
         {
           headers: {
