@@ -26,6 +26,7 @@ function Notes() {
         onSearch={handleSearch}
         onLogout={() => logout({ returnTo: window.location.origin })}
       />
+
       <main className="container p-3">
         <CardContainer
           refresh={refreshNotes}

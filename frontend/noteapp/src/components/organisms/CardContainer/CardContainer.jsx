@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react"; // Importamos el hook de Auth0
+import { useAuth0 } from "@auth0/auth0-react";
 import "./CardContainer.css";
 import Note from "../../molecules/Note/Note";
 import getDate from "../../../utils/GetDate";
@@ -11,17 +11,24 @@ const capitalizeCategory = (category) => {
 };
 
 function CardContainer({ refresh, filter, searchTerm }) {
-  const { getAccessTokenSilently } = useAuth0(); // Accedemos a la función para obtener el token
+  const { getAccessTokenSilently } = useAuth0();
   const [data, setData] = useState([]);
 
-  // Función para hacer la solicitud a Django y obtener las notas del usuario autenticado
+  // Función para hacer la solicitud a Django y obtener las notas del usuario autenticado o demo
   const fetchNotes = async () => {
     try {
-      const token = await getAccessTokenSilently();
+      const isDemoUser = localStorage.getItem("isDemoUser") === "true";
+      // Si es usuario demo, asignamos un token ficticio, de lo contrario, obtenemos el token real de Auth0
+      const token = isDemoUser ? "demo-token" : await getAccessTokenSilently();
+      if (!token) {
+        console.error("No token found. User may not be authenticated.");
+        return;
+      }
+
       console.log("Token:", token); // Verificamos el token en la consola
       const response = await axios.get("http://127.0.0.1:8000/notes/", {
         headers: {
-          Authorization: `Bearer ${token}`, // Enviamos el token en el encabezado Authorization
+          Authorization: `Bearer ${token}`,
         },
       });
       setData(response.data);

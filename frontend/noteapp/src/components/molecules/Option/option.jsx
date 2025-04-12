@@ -1,25 +1,32 @@
 import React, { useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react"; // Añade esta importación
+import { useAuth0 } from "@auth0/auth0-react";
 import "./Option.css";
 import Button from "react-bootstrap/Button";
 import NotesModal from "../../organisms/NotesModal/NotesModal";
 import axios from "axios";
-import actualDate from "../../../utils/GetDate";
+// import actualDate from "../../../utils/GetDate";
 
 function Option({ onNoteCreated }) {
   const [showModal, setShowModal] = useState(false);
-  const { getAccessTokenSilently } = useAuth0(); // Obtén la función para el token
+  const { getAccessTokenSilently } = useAuth0();
 
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
   const addNote = async (noteData) => {
     try {
-      const token = await getAccessTokenSilently(); // Obtén el token
+      const isDemoUser = localStorage.getItem("isDemoUser") === "true";
+      const token = isDemoUser ? "demo-token" : await getAccessTokenSilently();
+
+      if (!token) {
+        console.error("No token available, user is not authenticated.");
+        return;
+      }
+
       const newNote = {
-        ...noteData,
-        created: actualDate(),
-        updated: actualDate(),
+        title: noteData.title,
+        content: noteData.content,
+        category: noteData.category,
       };
 
       const response = await axios.post(
@@ -27,7 +34,7 @@ function Option({ onNoteCreated }) {
         newNote,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Añade el token aquí
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -37,6 +44,9 @@ function Option({ onNoteCreated }) {
       if (onNoteCreated) onNoteCreated();
     } catch (error) {
       console.error("Error creating the note:", error);
+      if (error.response && error.response.data) {
+        console.error("Detalle del error:", error.response.data);
+      }
       alert("Error when creating the note");
     }
   };

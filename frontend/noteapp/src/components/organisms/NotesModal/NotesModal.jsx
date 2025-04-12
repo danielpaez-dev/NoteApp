@@ -26,17 +26,12 @@ function NotesModal({
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
 
-    const updatedFields = {};
-
-    if (noteTitle !== title) {
-      updatedFields.title = noteTitle;
-    }
-    if (body !== content) {
-      updatedFields.content = body;
-    }
-    if (selectedOption !== category) {
-      updatedFields.category = selectedOption;
-    }
+    const updatedFields = {
+      title: noteTitle,
+      content: body,
+      category: selectedOption,
+      updated: actualDate(),
+    };
 
     // If changes exist, send modified data
     if (Object.keys(updatedFields).length > 0) {
@@ -61,7 +56,6 @@ function NotesModal({
   };
 
   const handleOptionChange = (option) => {
-    // Ensure the selected option is updated
     setSelectedOption(option);
   };
 
