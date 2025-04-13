@@ -22,7 +22,6 @@ class NoteDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
-    authentication_classes = [DemoTokenAuthentication]
 
     def get_queryset(self):
         return Note.objects.filter(user=self.request.user)

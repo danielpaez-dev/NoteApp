@@ -18,8 +18,8 @@ function NotesModal({
   const [selectedOption, setSelectedOption] = useState("");
 
   useEffect(() => {
-    setNoteTitle(title || "");
-    setBody(content || "");
+    setNoteTitle(title);
+    setBody(content);
     setSelectedOption(category || "Personal");
   }, [title, content, category]);
 

@@ -1,5 +1,3 @@
-# users/demo_authentication.py
-
 from rest_framework.authentication import BaseAuthentication
 from django.contrib.auth import get_user_model
 
@@ -28,11 +26,9 @@ class DemoTokenAuthentication(BaseAuthentication):
             try:
                 user = User.objects.get(username="demo")
             except User.DoesNotExist:
-                # Se crea un usuario demo por defecto.
                 user = User.objects.create_user(
                     username="demo", email="demo@example.com"
                 )
-                # Establece una contraseña inutilizable, ya que no se usará autenticación convencional.
                 user.set_unusable_password()
                 user.save()
             return (user, None)

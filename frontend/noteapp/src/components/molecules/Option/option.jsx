@@ -4,7 +4,6 @@ import "./Option.css";
 import Button from "react-bootstrap/Button";
 import NotesModal from "../../organisms/NotesModal/NotesModal";
 import axios from "axios";
-// import actualDate from "../../../utils/GetDate";
 
 function Option({ onNoteCreated }) {
   const [showModal, setShowModal] = useState(false);
@@ -24,10 +23,12 @@ function Option({ onNoteCreated }) {
       }
 
       const newNote = {
-        title: noteData.title,
-        content: noteData.content,
+        title: noteData.title | " ",
+        content: noteData.content || " ",
         category: noteData.category,
       };
+
+      console.log(newNote)
 
       const response = await axios.post(
         "http://127.0.0.1:8000/notes/",

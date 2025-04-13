@@ -3,8 +3,8 @@ from django.conf import settings
 
 
 class Note(models.Model):
-    title = models.CharField(max_length=200)
-    content = models.TextField()
+    title = models.CharField(max_length=200, blank=True, null=True)
+    content = models.TextField(blank=True, null=True)
     category = models.CharField(
         max_length=9,
         choices=[

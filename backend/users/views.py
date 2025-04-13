@@ -1,4 +1,3 @@
-# users/views.py
 import logging
 from urllib.parse import urlencode  # Para construir URLs de forma segura
 
@@ -11,20 +10,14 @@ from django.contrib import messages
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
-from django.urls import reverse  # Para generar URLs dinámicas
-
+from django.urls import reverse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-
-# Asumiendo que auth0helper existe y funciona como se espera
 from auth0login.auth0helper import get_token, get_user_info
 from .serializers import UserSerializer
 
-# Configuración del logger
 logger = logging.getLogger(__name__)
-
-# Obtener el modelo de usuario
 User = get_user_model()
 
 
@@ -36,14 +29,8 @@ class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]  # Requiere autenticación
 
     def get(self, request, *args, **kwargs):
-        """
-        Maneja peticiones GET. Devuelve los datos del usuario autenticado
-        utilizando el UserSerializer.
-        """
-        # ¡CORREGIDO! Usar siempre el serializador
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
-        # El código anterior que creaba user_data manualmente ha sido eliminado
 
 
 def callback(request):
@@ -74,17 +61,11 @@ def callback(request):
             logger.warning("Fallo al obtener user_info de Auth0.")
             return redirect(getattr(settings, "LOGIN_REDIRECT_URL", "/"))
 
-        # Usar 'sub' (identificador único de Auth0) como 'username' en Django
-        # Asegúrate de que el modelo User de Django permite la longitud de 'sub'
         auth0_sub = user_info["sub"]
         user_defaults = {
-            "email": user_info.get(
-                "email"
-            ),  # Permitir email nulo si Auth0 no lo devuelve
+            "email": user_info.get("email"),
             "first_name": user_info.get("given_name", ""),
             "last_name": user_info.get("family_name", ""),
-            # Considera si necesitas establecer una contraseña inutilizable
-            # "password": User.objects.make_random_password() # O set_unusable_password()
         }
 
         # Filtrar defaults None para evitar problemas con campos no nullable sin default
@@ -94,18 +75,7 @@ def callback(request):
             username=auth0_sub, defaults=user_defaults
         )
 
-        # Si no fue creado, igualmente actualizamos por si cambió algo en Auth0
-        # update_or_create ya maneja esto si los defaults son diferentes
-        # (Aunque un save() explícito no haría daño si quieres asegurar ciertas lógicas)
-        # if not created:
-        #    user.save() # Opcional, update_or_create ya guarda
-
-        # Iniciar sesión en Django
-        # Asegúrate de que tu backend de autenticación está configurado correctamente
-        # si no usas el backend por defecto.
-        django_login(
-            request, user, backend="django.contrib.auth.backends.ModelBackend"
-        )  # Especificar backend puede ser más seguro
+        django_login(request, user, backend="django.contrib.auth.backends.ModelBackend")
         messages.success(request, f"¡Bienvenido/a, {user.first_name or user.username}!")
 
     except Exception as e:
@@ -118,11 +88,7 @@ def callback(request):
         )
         return redirect(getattr(settings, "LOGIN_REDIRECT_URL", "/"))
 
-    # Redirigir a la URL 'next' guardada en 'state' o a un dashboard por defecto
-    # Asegúrate de que 'state' se esté pasando correctamente en la vista de login
     state = request.GET.get("state", None)
-    # Validar que 'state' (si existe) sea una URL segura/local (prevención de Open Redirect)
-    # Aquí una validación simple, podrías necesitar algo más robusto:
     next_url = (
         state
         if state and state.startswith("/")
@@ -141,8 +107,6 @@ def login(request):
         "next", getattr(settings, "LOGIN_REDIRECT_URL", "/dashboard/")
     )
 
-    # ¡MEJORA! Construir la redirect_uri dinámicamente
-    # Asumiendo que tu URL de callback se llama 'auth_callback' en tu urls.py
     try:
         callback_url = request.build_absolute_uri(reverse("auth_callback"))
     except Exception as e:
@@ -156,9 +120,9 @@ def login(request):
     auth_params = {
         "client_id": settings.SOCIAL_AUTH_AUTH0_KEY,
         "response_type": "code",
-        "scope": "openid profile email",  # Asegúrate que estos scopes están habilitados en Auth0
+        "scope": "openid profile email",
         "redirect_uri": callback_url,
-        "state": next_url,  # Usar 'state' para pasar 'next_url' de forma segura
+        "state": next_url,
     }
 
     # Construir la URL completa
@@ -175,8 +139,6 @@ def logout(request):
     user_display = request.user.username if request.user.is_authenticated else "Usuario"
     django_logout(request)  # Cierra sesión en Django
 
-    # ¡MEJORA! Construir la returnTo URL dinámicamente
-    # Asumiendo que quieres redirigir a la página principal (homepage) llamada 'home' en urls.py
     try:
         # Puedes cambiar 'home' por la URL a la que quieras volver tras el logout
         return_to_url = request.build_absolute_uri(reverse("home"))
@@ -192,7 +154,6 @@ def logout(request):
         "returnTo": return_to_url,
     }
 
-    # Construir la URL de logout
     auth0_domain = settings.SOCIAL_AUTH_AUTH0_DOMAIN
     logout_url = f"https://{auth0_domain}/v2/logout?{urlencode(logout_params)}"
 

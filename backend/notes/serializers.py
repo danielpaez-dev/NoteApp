@@ -3,6 +3,15 @@ from .models import Note
 
 
 class NoteSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(
+        allow_blank=True,
+        required=False,
+    )
+    content = serializers.CharField(
+        allow_blank=True,
+        required=False,
+    )
+
     class Meta:
         model = Note
         fields = [
