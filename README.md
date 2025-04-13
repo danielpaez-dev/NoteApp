@@ -7,11 +7,9 @@
 ![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
 
-¡Bienvenido/a a mi proyecto de notas full-stack
+¡Bienvenido/a a mi proyecto de notas full-stack!
 
 Note App es una aplicación web de gestión de notas que permite a los usuarios crear, editar, organizar y eliminar notas en una interfaz intuitiva y amigable. Desarrollada con una arquitectura moderna de frontend en React y backend en Django, esta aplicación demuestra la implementación de un sistema completo con autenticación, persistencia de datos y diseño responsive.
-
-> **Nota**: Este proyecto está aún en desarrollo. Algunas funcionalidades aún no están completamente implementadas, pero la estructura básica y la autenticación ya están en marcha.
 
 ## Tecnologías Utilizadas
 ### Frontend
