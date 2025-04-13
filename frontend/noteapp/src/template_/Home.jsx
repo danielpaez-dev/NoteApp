@@ -12,8 +12,11 @@ function Home() {
   };
 
   const handleLogin = () => {
+    localStorage.removeItem("isDemoUser");
+
     loginWithRedirect({
       appState: { returnTo: "/notes" },
+      prompt: "login",
     });
   };
 
