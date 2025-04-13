@@ -4,7 +4,7 @@ import Navbar from "../components/organisms/navbar/Navbar.jsx";
 import CardContainer from "../components/organisms/CardContainer/CardContainer";
 
 function Notes() {
-  const { user, isAuthenticated, logout } = useAuth0();
+  const { user, logout } = useAuth0();
   const [refreshNotes, setRefreshNotes] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
