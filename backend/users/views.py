@@ -22,11 +22,7 @@ User = get_user_model()
 
 
 class UserProfileView(APIView):
-    """
-    Vista de API para obtener (GET) el perfil del usuario autenticado.
-    """
-
-    permission_classes = [IsAuthenticated]  # Requiere autenticación
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         serializer = UserSerializer(request.user)
@@ -41,10 +37,7 @@ def callback(request):
     code = request.GET.get("code")
     if not code:
         messages.error(request, "No se recibió el código de autorización de Auth0.")
-        # Considera redirigir a una página de error específica o a la home
-        return redirect(
-            getattr(settings, "LOGIN_REDIRECT_URL", "/")
-        )  # Usa una URL de settings si existe
+        return redirect(getattr(settings, "LOGIN_REDIRECT_URL", "/"))
 
     try:
         token = get_token(code)
@@ -68,7 +61,6 @@ def callback(request):
             "last_name": user_info.get("family_name", ""),
         }
 
-        # Filtrar defaults None para evitar problemas con campos no nullable sin default
         user_defaults = {k: v for k, v in user_defaults.items() if v is not None}
 
         user, created = User.objects.update_or_create(
@@ -99,10 +91,6 @@ def callback(request):
 
 
 def login(request):
-    """
-    Redirige al usuario a la página de inicio de sesión de Auth0.
-    """
-    # Obtener la URL a la que redirigir después del login exitoso
     next_url = request.GET.get(
         "next", getattr(settings, "LOGIN_REDIRECT_URL", "/dashboard/")
     )
@@ -114,9 +102,8 @@ def login(request):
             f"Error al generar la URL de callback: {e}. Asegúrate de que la URL 'auth_callback' esté definida."
         )
         messages.error(request, "Error de configuración al intentar iniciar sesión.")
-        return redirect("/")  # O a una página de error
+        return redirect("/")
 
-    # Parámetros para la URL de autorización de Auth0
     auth_params = {
         "client_id": settings.SOCIAL_AUTH_AUTH0_KEY,
         "response_type": "code",
@@ -125,7 +112,6 @@ def login(request):
         "state": next_url,
     }
 
-    # Construir la URL completa
     auth0_domain = settings.SOCIAL_AUTH_AUTH0_DOMAIN
     signin_url = f"https://{auth0_domain}/authorize?{urlencode(auth_params)}"
 
@@ -133,22 +119,17 @@ def login(request):
 
 
 def logout(request):
-    """
-    Cierra la sesión del usuario en Django y redirige a Auth0 para el logout global.
-    """
     user_display = request.user.username if request.user.is_authenticated else "Usuario"
-    django_logout(request)  # Cierra sesión en Django
+    django_logout(request)
 
     try:
-        # Puedes cambiar 'home' por la URL a la que quieras volver tras el logout
         return_to_url = request.build_absolute_uri(reverse("home"))
     except Exception as e:
         logger.error(
             f"Error al generar la URL de retorno para logout: {e}. Usando fallback '/'."
         )
-        return_to_url = request.build_absolute_uri("/")  # Fallback seguro
+        return_to_url = request.build_absolute_uri("/")
 
-    # Parámetros para la URL de logout de Auth0 V2
     logout_params = {
         "client_id": settings.SOCIAL_AUTH_AUTH0_KEY,
         "returnTo": return_to_url,
@@ -158,6 +139,4 @@ def logout(request):
     logout_url = f"https://{auth0_domain}/v2/logout?{urlencode(logout_params)}"
 
     messages.info(request, f"{user_display} ha cerrado sesión.")
-    return HttpResponseRedirect(
-        logout_url
-    )  # Redirigir a Auth0 para completar el logout
+    return HttpResponseRedirect(logout_url)

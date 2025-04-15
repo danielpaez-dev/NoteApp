@@ -32,7 +32,7 @@ class Auth0TokenAuthentication(BaseAuthentication):
                 issuer=f"https://{settings.SOCIAL_AUTH_AUTH0_DOMAIN}/",
             )
             username = payload["sub"]
-            user, created = User.objects.get_or_create(username=username)
+            user = User.objects.get_or_create(username=username)
             return (user, token)
         except JWTError:
             return None

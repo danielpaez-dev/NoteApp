@@ -32,7 +32,6 @@ function CardContainer({ refresh, filter, searchTerm }) {
         },
       });
       setData(response.data);
-      console.log(response.data);
     } catch (err) {
       console.error("Error fetching notes:", err.message);
     }

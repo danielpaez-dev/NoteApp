@@ -33,7 +33,6 @@ function Note({ title, id, updated, content, category, onNoteUpdated }) {
 
   const handleUpdateNote = async (updatedNote) => {
     try {
-      // Actualiza el estado local para una respuesta inmediata en la UI
       setNoteData((prevData) => ({
         ...prevData,
         ...updatedNote,
@@ -41,15 +40,12 @@ function Note({ title, id, updated, content, category, onNoteUpdated }) {
 
       // Actualizar en el backend
       await updateNoteBackend(updatedNote);
-      console.log("Nota actualizada exitosamente");
 
-      // Refrescar la lista de notas
       if (onNoteUpdated) {
         onNoteUpdated();
       }
     } catch (error) {
       console.error("Error al actualizar la nota:", error);
-      alert("No se pudo actualizar la nota. Por favor, inténtalo de nuevo.");
     }
   };
 
@@ -72,16 +68,6 @@ function Note({ title, id, updated, content, category, onNoteUpdated }) {
         console.error("Token no disponible, el usuario no está autenticado.");
         return;
       }
-
-      const completeData = {
-        title: noteData.title || "",
-        content: noteData.content || "",
-        category: noteData.category || "Personal",
-        ...updatedFields,
-      };
-
-      console.log("Token usado para actualizar:", token);
-      console.log("Enviando datos al backend:", completeData);
 
       const response = await axios.put(
         `http://127.0.0.1:8000/notes/${id}/`,
@@ -131,14 +117,12 @@ function Note({ title, id, updated, content, category, onNoteUpdated }) {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Nota eliminada con éxito");
 
       if (onNoteUpdated) {
         onNoteUpdated();
       }
     } catch (error) {
       console.error("Error eliminando la nota:", error);
-      alert("Error eliminando la nota. Por favor, inténtalo de nuevo.");
     }
   };
 

@@ -16,7 +16,6 @@ class DemoTokenAuthentication(BaseAuthentication):
         if not auth_header:
             return None
 
-        # Espera que el header tenga el formato: "Bearer <token>"
         parts = auth_header.split()
         if len(parts) != 2 or parts[0] != "Bearer":
             return None

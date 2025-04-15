@@ -35,24 +35,24 @@ function NotesModal({
 
     // If changes exist, send modified data
     if (Object.keys(updatedFields).length > 0) {
-      updatedFields.updated = actualDate(); // Add update date
+      updatedFields.updated = actualDate();
 
       console.log("Submitting updated fields:", updatedFields);
 
       if (onSubmit) {
-        onSubmit(updatedFields); // Send only modified fields
+        onSubmit(updatedFields);
       }
     } else if (Object.keys(updatedFields).length == 4) {
       console.log("Creating new note:", updatedFields);
 
       if (onSubmit) {
-        onSubmit(updatedFields); // Sending new notes
+        onSubmit(updatedFields);
       }
     } else {
       console.log("No changes detected, skipping submit.");
     }
 
-    onHide(); // Close modal after verification
+    onHide();
   };
 
   const handleOptionChange = (option) => {

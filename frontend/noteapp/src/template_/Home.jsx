@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
-  const { loginWithRedirect, isAuthenticated, logout } = useAuth0();
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
   const navigate = useNavigate();
 
   const loginAsDemoUser = () => {
@@ -23,7 +23,7 @@ function Home() {
   return (
     <div className="container mt-5 text-center">
       <h1>Bienvenido</h1>
-      {!isAuthenticated ? (
+      {!isAuthenticated && (
         <>
           <button className="btn btn-primary m-2" onClick={handleLogin}>
             Iniciar sesión / Registrarse con Auth0
@@ -32,13 +32,6 @@ function Home() {
             Usar usuario de prueba
           </button>
         </>
-      ) : (
-        <button
-          className="btn btn-danger"
-          onClick={() => logout({ returnTo: window.location.origin })}
-        >
-          Cerrar sesión
-        </button>
       )}
     </div>
   );
