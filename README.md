@@ -1,4 +1,4 @@
-# Aplicación de Notas Full-Stack con React y Django
+# Full-Stack Notes Application with React and Django
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)
@@ -7,77 +7,102 @@
 ![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
 
-¡Bienvenido/a a mi proyecto de notas full-stack!
+[Español](README-es.md)
 
-Note App es una aplicación web de gestión de notas que permite a los usuarios crear, editar, organizar y eliminar notas en una interfaz intuitiva y amigable. Desarrollada con una arquitectura moderna de frontend en React y backend en Django, esta aplicación demuestra la implementación de un sistema completo con autenticación, persistencia de datos y diseño responsive.
+Welcome to my full-stack notes project!
 
-## Tecnologías Utilizadas
+Note App is a web application for note management that allows users to create, edit, organize, and delete notes through an intuitive and user-friendly interface. Developed with a modern architecture featuring React on the frontend and Django on the backend, this application demonstrates the implementation of a complete system with authentication, data persistence, and responsive design.
+
+## Technologies Used
+
 ### Frontend
 
-- **React**: Biblioteca **JavaScript** para construir interfaces de usuario
-- **React-Bootstrap**: Framework de UI para implementar diseños responsivos
-- **SCSS**: Preprocesador **CSS** para estilos avanzados
-- **Auth0**: Servicio de autenticación y autorización
+- **React**: JavaScript library for building user interfaces
+- **React-Bootstrap**: UI framework for implementing responsive designs
+- **SCSS**: CSS preprocessor for advanced styling
+- **Auth0**: Authentication and authorization service
 
 ### Backend
 
-- **Django**: Framework de **Python** para desarrollo web
-- **SQLite**: Base de datos relacional para persistencia de datos
-- **Django REST Framework**: Herramienta para construir APIs web
+- **Django**: Python framework for web development
+- **SQLite**: Relational database for data persistence
+- **Django REST Framework**: Tool for building web APIs
 
-## Características
+## Features
 
-- Autenticación segura mediante Auth0
-- Gestión completa de notas (CRUD)
-- Interfaz de usuario intuitiva y responsive
-- Persistencia de datos en SQLite
-- Diseño moderno con React-Bootstrap y SCSS
+- Secure authentication through Auth0
+- Complete note management (CRUD)
+- Intuitive and responsive user interface
+- Data persistence in SQLite
+- Modern design with React-Bootstrap and SCSS
 
-## Requisitos Previos
-Para ejecutar este proyecto, necesitarás tener instalado lo siguiente:
-- [Node.js](https://nodejs.org/) (versión 14 o superior)
-- [npm](https://www.npmjs.com/) (viene con Node.js)
-- [Python](https://www.python.org/) (versión 3.8 o superior)
-- [pip](https://pip.pypa.io/en/stable/installation/) (viene con Python)
-- [Git](https://git-scm.com/) (para clonar el repositorio)
+## Prerequisites
 
-## Clonar el Repositorio
+To run this project, you'll need to have the following installed:
+
+- [Node.js](https://nodejs.org/) (version 14 or higher)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+- [Python](https://www.python.org/) (version 3.8 or higher)
+- [pip](https://pip.pypa.io/en/stable/installation/) (comes with Python)
+- [Git](https://git-scm.com/) (to clone the repository)
+
+## Cloning the Repository
+
 ### Backend
-1. Para obtener una copia local del proyecto, ejecuta el siguiente comando en tu terminal:
+
+1. To get a local copy of the project, run the following command in your terminal:
+
 ```bash
 git clone https://github.com/danielpaez-dev/NoteApp.git
 cd noteapp
 ```
-2. Configura el entorno virtual y activarlo:
+
+2. Set up the virtual environment and activate it:
+
 ```bash
 cd backend/notes
-.\venv\Scripts\Activate.ps1  # En Windows PowerShell
-# source venv/bin/activate  # En Unix/Linux
+.\venv\Scripts\Activate.ps1  # On Windows PowerShell
+# source venv/bin/activate  # On Unix/Linux
 ```
-3. Instalar dependencias:
+
+3. Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
-4. Ejecutar migraciones:
+
+4. Run migrations:
+
 ```bash
 python manage.py migrate
 ```
-5. Inicia el servidor:
+
+5. Start the server:
+
 ```bash
 python manage.py runserver
 ```
-El backend estará disponible en http://localhost:8000.
+
+The backend will be available at http://localhost:8000.
+
 ### Frontend
-1. Navegar al directorio del frontend:
+
+1. Navigate to the frontend directory:
+
 ```bash
 cd frontend/noteapp
 ```
-2. Instalar dependencias:
+
+2. Install dependencies:
+
 ```bash
 npm install
 ```
-3. Iniciar el servidor de desarrollo:
+
+3. Start the development server:
+
 ```bash
 npm run dev
 ```
-La aplicación estará disponible en la URL mostrada en la terminal http://localhost:5173.
+
+The application will be available at the URL shown in the terminal http://localhost:5173.
